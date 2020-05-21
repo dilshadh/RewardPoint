@@ -7,6 +7,8 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    DB_NAME = "development_db"
+    DB_URI = "mysql:root/"
 
 class TestingConfig(Config):
-    TESTING = True
+    TESTING = False

@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, Blueprint
 
-
-def create_app(flask_config_name=None):
+from .views import views
+def create_app(config_file=None):
     app = Flask(__name__)
-    import rewardapp.views
     app.config.from_object('config.DevelopmentConfig')
+    app.register_blueprint(views)
     return app
