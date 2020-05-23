@@ -6,9 +6,8 @@ class ProductionConfig(Config):
     pass
 
 class DevelopmentConfig(Config):
-    DEBUG = True
-    DB_NAME = "development_db"
-    DB_URI = "mysql:root/"
+    FLASK_DEBUG = 1
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://admin:Admin123@database-1.cp61wyr1b7dt.us-east-1.rds.amazonaws.com/root"
 
 class TestingConfig(Config):
     TESTING = False
