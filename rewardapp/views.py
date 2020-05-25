@@ -1,12 +1,8 @@
-from flask import Blueprint
-from rewardapp import db
-views = Blueprint('views',__name__)
+from flask import Blueprint, render_template, request
+from rewardapp.forms import LoginForm
+views = Blueprint('views', __name__, template_folder="templates")
 
 @views.route("/")
 def mainPage():
-    return "Hi DIlshad welcome to tissdfsdsdf"
+    return render_template("base.html")
 
-@views.route("/home")
-def homePage():
-    db.create_all()
-    return "this is home page"

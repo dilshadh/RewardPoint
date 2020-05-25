@@ -1,7 +1,12 @@
 from rewardapp import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from rewardapp import login_manager
+@login_manager.user_loader
+def load_employee(e_id):
+    return Employee.query.get(int(e_id))
 
-class Employee(db.Model):
+class Employee(db.Model, UserMixin):
     e_id = db.Column(db.Integer, primary_key=True)
     e_username = db.Column(db.String(80), unique=True)
     e_password_hash = db.Column(db.String(128))
@@ -18,3 +23,6 @@ class Employee(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.e_password_hash, password)
+    
+    def get_id(self):
+           return (self.e_id)
