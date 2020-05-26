@@ -26,3 +26,19 @@ class Employee(db.Model, UserMixin):
     
     def get_id(self):
            return (self.e_id)
+
+class Customer(db.Model, UserMixin):
+    c_id = db.Column(db.Integer, primary_key=True)
+    c_username = db.Column(db.String(80), unique=True)
+    c_name = db.Column(db.String(80))
+    c_phone_number = db.Column(db.String(80), unique=True)
+    c_email = db.Column(db.String(80), unique=True)
+
+    def __init__(self, c_username, c_name, c_phone_number, c_email):
+        self.c_username = c_username
+        self.c_name = c_name
+        self.c_phone_number = c_phone_number
+        self.c_email = c_email
+
+    def get_id(self):
+           return (self.c_id)

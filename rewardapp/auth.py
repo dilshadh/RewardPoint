@@ -2,16 +2,17 @@ from flask import Blueprint, render_template, request, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from .model import Employee
 from rewardapp import db
-
+from flask import request
+from rewardapp.forms.e_loginForm import LoginForm
+from flask_wtf import form
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login')
+@auth.route('/login',methods=['GET','POST'])
 def login():
-    return render_template('login.html')
-
-@auth.route('/login',methods=['POST'])
-def loginPost():
+    if request.method == 'GET':
+        form = LoginForm()
+        return render_template('login.html', title='Login', form=form)
     username =  request.form.get('username')
     password = request.form.get('password')
     employee = Employee.query.filter_by(e_username=username).first()
@@ -23,7 +24,7 @@ def loginPost():
         flash('Password Entered is Incorrect!')
         return render_template('login.html')
     flash('UserName doesnt exists!')
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 @auth.route('/signup')
 @login_required
@@ -34,6 +35,12 @@ def signup():
 @auth.route('/logout')
 @login_required
 def logout():
-    current_user.authenticated = True
+    current_user.authenticated = False
     logout_user()
-    return render_template('login.html')
+    return render_template('login.html', form=form)
+
+@auth.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
+
+

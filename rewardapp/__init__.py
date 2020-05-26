@@ -10,7 +10,7 @@ def create_app(config_file=None):
     app.config.from_object('config.DevelopmentConfig')
     login_manager.init_app(app)
     db.init_app(app)
-    from rewardapp.model import Employee
+    from rewardapp.model import Employee, Customer
     with app.app_context():
         db.create_all()
        
