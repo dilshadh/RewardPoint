@@ -1,10 +1,51 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1 class="title">
-  Flask Login Example
-</h1>
-<h2 class="subtitle">
-  Easy authentication and authorization in Flask.
-</h2>
+   <head>
+      <meta charset = "utf-8">
+      <title>jQuery UI Autocomplete functionality</title>
+      <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      
+      <!-- Javascript -->
+      <script>
+         var data
+         $(function() {
+            $( "#automplete" ).autocomplete({
+               source: function (request, response) {
+                                $.getJSON('/autocomplete?term=' + request.term, function (data) {
+                                    response($.map(data, function (item) {
+                                        
+                                        return {
+                                            label: item.c_phone_number,
+                                            value: item.c_phone_number,
+                                            data: item
+                                            
+                                        };
+                                    }));
+                                });
+                            },
+               minLength:2,
+               select: function(event, ui) {
+                document.getElementById("customerName").value = ui.item.data.c_name;
+                document.getElementById("customerEmail").value = ui.item.data.c_email;
+              }
+            });
+         });
+         
+      </script>
+   </head>
+   
+   <body>
+      <!-- HTML --> 
+      <div class = "ui-widget">
+         <p>Customer Mobile Number</p>
+         <label for = "automplete" value="c_phone_number">Search: </label>
+         <input id = "automplete"></input>
+         <input id="customerName" ></input>
+         <input id="customerEmail" ></input>
+      </div>
+   </body>
+</html>
 {% endblock %}

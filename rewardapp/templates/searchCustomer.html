@@ -1,26 +1,30 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="content-section">
+
+   <body>
+     
+      <div class="content-section">
     
-        <form method="POST"  action="">
+        <form method="POST" action="" id="myform">
           {{ form.hidden_tag() }}
           <fieldset class="form-group">
-              <legend class="border-bottom lg-1">REGISTER CUSTOMER</legend>
+              <legend class="border-bottom lg-1">SEARCH CUSTOMER</legend>
               <div class="form-group">
-                  {{ form.username.label(class="form-control-label") }}
-                  {% if form.username.errors %}
-                    {{ form.username(class="form-control form-control-lg is-invalid") }}
+                <label for = "phonenumber" value="c_phone_number" id="" >Search: </label>
+                  {{ form.phonenumber.label(class="form-control-label") }}
+                  {% if form.phonenumber.errors %}
+                    {{ form.phonenumber(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
-                      {% for error in form.username.errors %}
+                      {% for error in form.phonenumber.errors %}
                           
                           <span>{{ error }}</span>
                       {% endfor %}
                     </div>
                   {% else %}
-                  
-                      {{ form.username(class="form-control form-control-lg") }}
-                  {% endif %}
+                  <div class = "ui-widget">
+                      {{ form.phonenumber(class="form-control form-control-lg",id="phonenumber") }}
+                  </div>
+                      {% endif %}
               </div>
               <div class="form-group">
                 {{ form.fullname.label(class="form-control-label") }}
@@ -32,20 +36,7 @@
                       {% endfor %}
                   </div>
                   {% else %}
-                      {{ form.fullname(class="form-control form-control-lg") }}
-                  {% endif %}
-              </div>
-              <div class="form-group">
-                {{ form.phonenumber.label(class="form-control-label") }}
-                {% if form.phonenumber.errors %}
-                    {{ form.phonenumber(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                      {% for error in form.phonenumber.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-                  {% else %}
-                      {{ form.phonenumber(class="form-control form-control-lg") }}
+                      {{ form.fullname(class="form-control form-control-lg",id ="customerName") }}
                   {% endif %}
               </div>
               <div class="form-group">
@@ -58,13 +49,22 @@
                       {% endfor %}
                   </div>
                   {% else %}
-                      {{ form.email(class="form-control form-control-lg") }}
+                      {{ form.email(class="form-control form-control-lg",id="customerEmail") }}
                   {% endif %}
               </div>
           </fieldset>
-          <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+          <div class="btn-group">
+          <div class="form-group mr-2">
+            {{ form.submit(class="btn btn-outline-info", id="submit") }}
           </div>
+          <div class="form-group mr-2">
+            {{ form.deleteCustomer(class="btn btn-outline-info", id="deleteCustomer") }}
+          </div>
+        </div>
         </form>
+        </div>
 </div>
+
+   </body>
+</html>
 {% endblock %}

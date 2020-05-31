@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, BooleanField, IntegerField
+from wtforms import PasswordField, StringField, SubmitField, BooleanField, IntegerField, TextField
 from wtforms.validators import DataRequired, Length, ValidationError
 from rewardapp.model import Customer
 import phonenumbers
@@ -12,7 +12,7 @@ class CustomerRegistrationForm(FlaskForm):
                             validators=[DataRequired(), Length(min=2, max=20)])
     phonenumber = StringField('Phone', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
-    submit = SubmitField('Log In')
+    submit = SubmitField('Register')
 
     def validate_phonenumber(self, phonenumber):
         if Customer.query.filter_by(c_phone_number=phonenumber.data).first():
@@ -22,9 +22,6 @@ class CustomerRegistrationForm(FlaskForm):
             if len(phonenumber.data) > 10:
                 raise ValidationError('Invalid phone number!')
             
-                input_number = phonenumbers.parse(phonenumber.data)
-                if not (phonenumbers.is_valid_number(input_number)):
-                    raise ValidationError('Invalid phone number!')
         except:
                 raise ValidationError('Invalid phone number!')
 
@@ -37,5 +34,10 @@ class CustomerRegistrationForm(FlaskForm):
         except EmailNotValidError as e:
             raise ValidationError('Invalid Email.Please check again!') 
 
-class SearchCustomer(FlaskForm):
-    phonenumber = StringField('Phone', validators=[DataRequired()])
+class SearchCustomerForm(FlaskForm):
+    phonenumber = StringField('Phone Number', id='phone_autocomplete', render_kw={"placeholder": "Customer Phone Number"}
+                       ,validators=[DataRequired()])
+    fullname = StringField('Full Name', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+    deleteCustomer = SubmitField('Remove Customer')

@@ -13,7 +13,6 @@ def create_app(config_file=None):
     from rewardapp.model import Employee, Customer
     with app.app_context():
         db.create_all()
-       
     from rewardapp.views import views
     from rewardapp.auth import auth
     app.register_blueprint(views)
