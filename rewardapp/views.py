@@ -50,9 +50,10 @@ def autocomplete():
 def searchCustomer():
     form = SearchCustomerForm()
     if form.validate_on_submit():
+        print(form)
         if form.submit.data:
             pass
-        elif form.deleteCustomer.data:
+        elif form.deleteCustomer:
             phonenumber = form.phonenumber.data
             customer = Customer.query.filter_by(c_phone_number=phonenumber).first()
             if customer:
@@ -61,7 +62,7 @@ def searchCustomer():
                 flash('Customer Removed Successfully','success')
             else:
                 flash('Customer Not Found','danger')
-            return redirect(url_for('views.searchCustomer'))
+            return jsonify(dict(redirect=url_for('views.searchCustomer')))
     return render_template("searchCustomer.html",title='Customer Search',form=form)
 
 @views.route("/customerprofile", methods=['POST'])

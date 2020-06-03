@@ -21,3 +21,45 @@ var data
            }
          });
       });
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+      $(document).on('click', '#deleteCustomer', function(e){
+        event.preventDefault();
+            
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function () {
+              form = $('#searchCustomerForm')
+              console.log(form)
+              $.ajax({
+                  type: "POST",
+                  url: "",
+                  data: form.serialize(),
+                  cache: false,
+                  success: function(response) {
+                      if (response.redirect) {
+                        window.location.href = response.redirect;
+                      }
+                      swal(
+                      "Sccess!",
+                      "Your note has been saved!",
+                      "success"
+                      )
+                  },
+                  failure: function (response) {
+                      window.location.href = "/searchCustomer"
+                      swal(
+                      "Internal Error",
+                      "Oops, your note was not saved.", // had a missing comma
+                      "error"
+                      )
+                  }
+              });
+    
+            }).catch(swal.noop);
+        })
