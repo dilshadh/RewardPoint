@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required
 from rewardapp.forms.emp_forms import LoginForm, EmployeeRegForm
-from rewardapp.model import Customer, Employee
+from rewardapp.model import Customer, Employee, Rewards
 from rewardapp import db
+from datetime import datetime
 views = Blueprint('views', __name__, template_folder="templates")
 
 @views.route("/", methods=['GET'])
@@ -28,3 +29,15 @@ def empRegistration():
         db.session.commit()
         flash('Employee Added Successfully!','success')
     return render_template("employeeRegistration.html",title='Employee Registration', form=form)    
+
+@views.route("/rewaddemo", methods=['GET'])
+def rewadDemo():
+    customer_number="9895059403"
+    customer_id=Customer.query.filter_by(c_phone_number=customer_number).first()
+    cust_id= customer_id.c_id
+    print("Customer id is  ",cust_id)
+    reward=Rewards(r_point=100, r_ename="ashiq",r_cutomerid=cust_id)
+    print(reward.r_ename)
+    db.session.add(reward)
+    db.session.commit()
+    return "hi"

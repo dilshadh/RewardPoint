@@ -2,6 +2,8 @@ from rewardapp import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from rewardapp import login_manager
+from datetime import datetime
+
 @login_manager.user_loader
 def load_employee(e_id):
     return Employee.query.get(int(e_id))
@@ -42,3 +44,20 @@ class Customer(db.Model, UserMixin):
 
     def get_id(self):
            return (self.c_id)
+
+class Rewards(db.Model, UserMixin):
+    r_id = db.Column(db.Integer, primary_key=True)
+    r_point = db.Column(db.Float)
+    r_ename = db.Column(db.String(30))
+    r_created_date = db.Column(db.DateTime, default=datetime.utcnow)
+    r_cutomerid = db.Column(db.Integer, db.ForeignKey('customer.c_id'),
+        nullable=False)
+    customer = db.relationship('Customer',
+        backref=db.backref('rewards', lazy=True))
+   
+    def __init__(self, r_point, r_ename, r_cutomerid):
+        
+        self.r_point = r_point
+        self.r_ename = r_ename
+        self.r_cutomerid= r_cutomerid
+          
