@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required
 from rewardapp.forms.emp_forms import LoginForm, EmployeeRegForm
-from rewardapp.model import Customer, Employee, Rewards
+from rewardapp.model import Customer, Employee, Rewards, Configuration
 from rewardapp import db
 from datetime import datetime
+from rewardapp.utils import rewardCalculation
 views = Blueprint('views', __name__, template_folder="templates")
 
 @views.route("/", methods=['GET'])
@@ -32,11 +33,16 @@ def empRegistration():
 
 @views.route("/rewaddemo", methods=['GET'])
 def rewadDemo():
+    reward_point = rewardCalculation(1000, 1)
+    print(reward_point)
     customer_number="9895059403"
     customer_id=Customer.query.filter_by(c_phone_number=customer_number).first()
     cust_id= customer_id.c_id
-    reward=Rewards(r_point=100, r_ename="ashiq",r_cutomerid=cust_id)
+    reward=Rewards(r_fuelamount=1000, r_point= reward_point, r_ename="ashiq",r_cutomerid=cust_id)
     print(reward.r_ename)
     db.session.add(reward)
+    config=Configuration.query.get(1)
+    config.cnfg_name="reward_rate"
+    config.cnfg_value=2
     db.session.commit()
     return "hi"

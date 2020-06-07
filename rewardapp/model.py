@@ -47,6 +47,7 @@ class Customer(db.Model, UserMixin):
 
 class Rewards(db.Model, UserMixin):
     r_id = db.Column(db.Integer, primary_key=True)
+    r_fuelamount=db.Column(db.Float)
     r_point = db.Column(db.Float)
     r_ename = db.Column(db.String(30))
     r_created_date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -55,9 +56,18 @@ class Rewards(db.Model, UserMixin):
     customer = db.relationship('Customer',
         backref=db.backref('rewards', lazy=True))
    
-    def __init__(self, r_point, r_ename, r_cutomerid):
+    def __init__(self, r_fuelamount, r_point, r_ename, r_cutomerid):
         
+        self.r_fuelamount = r_fuelamount
         self.r_point = r_point
         self.r_ename = r_ename
         self.r_cutomerid= r_cutomerid
-          
+class Configuration(db.Model, UserMixin):
+    cnfg_id = db.Column(db.Integer, primary_key=True)         
+    cnfg_name = db.Column(db.String(100))
+    cnfg_value = db.Column(db.Float) 
+    cnfg_updated_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, cnfg_name, cnfg_value):
+        self.cnfg_value = cnfg_value
+        self.cnfg_name = cnfg_name
