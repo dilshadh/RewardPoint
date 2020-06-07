@@ -35,7 +35,6 @@ def rewadDemo():
     customer_number="9895059403"
     customer_id=Customer.query.filter_by(c_phone_number=customer_number).first()
     cust_id= customer_id.c_id
-    print("Customer id is  ",cust_id)
     reward=Rewards(r_point=100, r_ename="ashiq",r_cutomerid=cust_id)
     print(reward.r_ename)
     db.session.add(reward)
