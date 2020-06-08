@@ -1,5 +1,3 @@
-from rewardapp.model import Employee
-def fetchMobileNumber(phone_number):
-    
-    employee = Employee.query.filter_by(e_phone_number=phone_number).first()
-    return employee
+def rewardCalculation(r_fuelamount, reward_rate):
+     reward_point= r_fuelamount*reward_rate/100
+     return reward_point

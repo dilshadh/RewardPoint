@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from .model import Employee
 from rewardapp import db
 from flask import request
-from rewardapp.forms.e_loginForm import LoginForm
+from rewardapp.forms.emp_forms import LoginForm
 from flask_wtf import form
 auth = Blueprint('auth', __name__)
 
