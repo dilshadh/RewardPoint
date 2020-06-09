@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask_wtf import Form, FlaskForm
 from wtforms import PasswordField, StringField, HiddenField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
@@ -49,3 +50,15 @@ class EmployeeRegForm(FlaskForm):
     def validate_userName(self, userName):
         if Employee.query.filter_by(e_username=userName.data).first():
             raise ValidationError('User name already exist.')       
+=======
+from flask_wtf import FlaskForm
+from wtforms import PasswordField, StringField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length 
+
+
+class LoginForm(FlaskForm):
+    username = StringField(validators=[DataRequired(), Length(min=2, max=20)],render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[DataRequired()],render_kw={"placeholder": "Password"})
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Log In')
+>>>>>>> dilshad

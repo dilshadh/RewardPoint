@@ -1,30 +1,34 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
 from .model import Employee
 from rewardapp import db
 from flask import request
 from rewardapp.forms.emp_forms import LoginForm
-from flask_wtf import form
 auth = Blueprint('auth', __name__)
 
+@auth.route('/',methods=['GET'])
+def home():
+    return redirect(url_for('auth.login'))
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
-    if request.method == 'GET':
-        form = LoginForm()
-        return render_template('login.html', title='Login', form=form)
-    username =  request.form.get('username')
-    password = request.form.get('password')
-    employee = Employee.query.filter_by(e_username=username).first()
-    if employee:
-        if employee.check_password(password):
-            employee.authenticated = True
-            login_user(employee, remember=True)
-            return render_template('homePage.html')
-        flash('Password Entered is Incorrect!')
-        return render_template('login.html')
-    flash('UserName doesnt exists!')
-    return render_template('login.html', form=form)
+    form = LoginForm()
+    print("jhi")
+    if form.validate_on_submit():
+        print('validated on submit')
+        username =  form.username.data
+        password = form.password.data
+        employee = Employee.query.filter_by(e_username=username).first()
+        if employee:
+            if employee.check_password(password):
+                employee.authenticated = True
+                login_user(employee, remember=form.remember.data)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('views.homePage'))
+            flash('Password Entered is Incorrect!','danger')
+            return render_template('index.html',title='Login', form=form)
+        flash('UserName doesnt exists!','danger')
+    return render_template('index.html',title='Login', form=form)
 
 @auth.route('/signup')
 @login_required
@@ -35,9 +39,11 @@ def signup():
 @auth.route('/logout')
 @login_required
 def logout():
-    current_user.authenticated = False
+    form = LoginForm()
+    employee = current_user
+    employee.authenticated = False
     logout_user()
-    return render_template('login.html', form=form)
+    return redirect(url_for('auth.login'))
 
 @auth.errorhandler(404)
 def page_not_found(e):
