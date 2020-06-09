@@ -47,9 +47,6 @@ class EmployeeRegForm(FlaskForm):
                 raise ValidationError('Invalid phone number!')
     def validate_userName(self, userName):
         if Employee.query.filter_by(e_username=userName.data).first():
-            raise ValidationError('User name already exist.')       
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length 
+            raise ValidationError('User name already exist.')   
 
 

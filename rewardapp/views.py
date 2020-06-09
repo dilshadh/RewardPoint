@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, flash, jsonify, Response, redirect, url_for
 from flask_login import login_required
 from rewardapp.forms.cust_forms import CustomerRegistrationForm, SearchCustomerForm
-from rewardapp.model import Customer, Employee
+from rewardapp.forms.emp_forms import EmployeeRegForm
+from rewardapp.model import Customer, Employee, Rewards, Configuration
 from rewardapp import db
+from rewardapp.utils import rewardCalculation
 import json
 views = Blueprint('views', __name__, template_folder="templates")
 
@@ -31,21 +33,7 @@ def empRegistration():
         flash('Employee Added Successfully!','success')
     return render_template("employeeRegistration.html",title='Employee Registration', form=form)    
 
-@views.route("/rewaddemo", methods=['GET'])
-def rewadDemo():
-    reward_point = rewardCalculation(1000, 1)
-    print(reward_point)
-    customer_number="9895059403"
-    customer_id=Customer.query.filter_by(c_phone_number=customer_number).first()
-    cust_id= customer_id.c_id
-    reward=Rewards(r_fuelamount=1000, r_point= reward_point, r_ename="ashiq",r_cutomerid=cust_id)
-    print(reward.r_ename)
-    db.session.add(reward)
-    config=Configuration.query.get(1)
-    config.cnfg_name="reward_rate"
-    config.cnfg_value=2
-    db.session.commit()
-    return "hi"
+@views.route("/customerRegistration", methods=['GET','POST'])
 def CustomerRegistration():
     form = CustomerRegistrationForm()
     if form.validate_on_submit():
