@@ -6,11 +6,8 @@ from rewardapp import db
 import json
 views = Blueprint('views', __name__, template_folder="templates")
 
-@views.route("/", methods=['GET'])
-def mainPage():
-    return render_template("base.html")
-
-@views.route("/home", methods=['GET'])
+@views.route("/homePage", methods=['GET'])
+@login_required
 def homePage():
     return render_template("homePage.html")
 

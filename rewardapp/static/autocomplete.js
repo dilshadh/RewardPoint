@@ -35,7 +35,6 @@ var data
                 confirmButtonText: 'Yes, delete it!'
             }).then(function () {
               form = $('#searchCustomerForm')
-              console.log(form)
               $.ajax({
                   type: "POST",
                   url: "",

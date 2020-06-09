@@ -6,11 +6,16 @@ from flask import request
 from rewardapp.forms.emp_forms import LoginForm
 auth = Blueprint('auth', __name__)
 
+@auth.route('/',methods=['GET'])
+def home():
+    return redirect(url_for('auth.login'))
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
     form = LoginForm()
+    print("jhi")
     if form.validate_on_submit():
+        print('validated on submit')
         username =  form.username.data
         password = form.password.data
         employee = Employee.query.filter_by(e_username=username).first()
@@ -21,9 +26,9 @@ def login():
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('views.homePage'))
             flash('Password Entered is Incorrect!','danger')
-            return render_template('login.html',title='Login', form=form)
+            return render_template('index.html',title='Login', form=form)
         flash('UserName doesnt exists!','danger')
-    return render_template('login.html',title='Login', form=form)
+    return render_template('index.html',title='Login', form=form)
 
 @auth.route('/signup')
 @login_required
