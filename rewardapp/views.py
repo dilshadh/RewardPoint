@@ -6,8 +6,7 @@ from rewardapp.model import Customer, Employee, Rewards, Configuration
 from rewardapp import db
 from rewardapp.utils import rewardCalculation
 import json
-views = Blueprint('views', __name__, template_folder="templates")
-
+'''
 @views.route("/homePage", methods=['GET'])
 @login_required
 def homePage():
@@ -86,3 +85,4 @@ def searchCustomer():
 @views.route("/customerprofile", methods=['POST'])
 def customerProfile():
     print(request.args.get('data'))
+'''

@@ -1,10 +1,30 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, login_required, current_user, logout_user
+from flask_jwt_extended import create_access_token
 from .model import Employee
 from rewardapp import db
+from flask_restful import Resource
 from flask import request
-from rewardapp.forms.emp_forms import LoginForm
-auth = Blueprint('auth', __name__)
+import datetime
+
+
+class LoginApi(Resource):
+
+    def post(self):
+        body = request.get_json()
+        username =  body.get('username')
+        password = body.get('password')
+        employee = Employee.query.filter_by(e_username=username).first()
+        if employee:
+            if employee.check_password(password):
+                expires = datetime.timedelta(days=7)
+                access_token = create_access_token(identity=str(employee.e_phone_number), expires_delta=expires)
+                return {'token': access_token}, 200
+            return {'error' : 'Password entered is incorrect'}, 401
+        return {'error' : 'Employee Not Found'}, 401
+
+
+'''
 
 @auth.route('/',methods=['GET'])
 def home():
@@ -50,3 +70,4 @@ def page_not_found(e):
     return render_template("404.html")
 
 
+'''

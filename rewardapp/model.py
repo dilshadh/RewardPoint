@@ -14,7 +14,7 @@ class Employee(db.Model, UserMixin):
     e_password_hash = db.Column(db.String(128))
     e_name = db.Column(db.String(80))
     e_phone_number = db.Column(db.String(80), unique=True)
-    
+
     def __init__(self, e_username, e_name, e_phone_number):
         self.e_username = e_username
         self.e_name = e_name
@@ -28,6 +28,7 @@ class Employee(db.Model, UserMixin):
     
     def get_id(self):
            return (self.e_id)
+
 
 class Customer(db.Model, UserMixin):
     c_id = db.Column(db.Integer, primary_key=True)
