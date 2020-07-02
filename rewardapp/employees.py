@@ -9,7 +9,9 @@ class GetEmployee(Resource):
     def get(self, e_username):
         employee = Employee.query.filter_by(e_username=e_username).first()
         if employee:
-            return jsonify(employee)
+            empObj = employee.__dict__
+            del empObj['_sa_instance_state']
+            return jsonify(empObj)
         return {'error' : 'Employee doesnt exist'}, 401
 
 class EmployeeApi(Resource):
