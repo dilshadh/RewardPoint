@@ -1,4 +1,5 @@
-from rewardapp.model import Customer
+from rewardapp.model import Customer, Configuration, Rewards
+from rewardapp.utils import rewardCalculation
 from flask_restful import Resource
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required
@@ -50,4 +51,34 @@ class SingleCustomer(Resource):
             db.session.commit()    
             return {'c_name' : customer.c_name }, 200
         return {'error' : "Customer doesnt exist" }, 401
-        
+
+class CustomerReward(Resource):
+
+    def post(self):
+        c_phone_number=request.form['c_phone_number']
+        r_fuelamount=request.form['r_fuelamount']
+        reward_point = rewardCalculation(r_fuelamount)
+        customer=Customer.query.filter((Customer.c_phone_number == c_phone_number) & (Customer.c_active_flag == 1)).first()
+        if customer:
+            customer_id = customer.c_id
+            reward=Rewards(r_fuelamount=r_fuelamount, r_point= reward_point, r_ename="ashiq",r_cutomerid=customer_id)
+            db.session.add(reward)
+            db.session.commit()
+            return {'reward_point': reward_point}
+        return {'error' : "Customer doesnt exist" }, 401
+
+class RewardRate(Resource):
+
+    def post(self):
+        cnfg_name = request.form['cnfg_name']
+        cnfg_value = request.form['cnfg_value']
+        config =  Configuration.query.filter(Configuration.cnfg_name == cnfg_name).first()
+        if config:
+            config.cnfg_value = cnfg_value
+            db.session.commit()
+            return {'status ' : "Reward rate updated"}, 200 
+        else:      
+            configuration= Configuration(cnfg_name=cnfg_name, cnfg_value=cnfg_value)    
+            db.session.add(configuration)
+            db.session.commit()
+            return {'status ' : "Reward rate added"}, 200
