@@ -17,12 +17,12 @@ def create_app(config_file=None):
     from rewardapp.model import Employee, Customer, Rewards, Configuration
     with app.app_context():
         db.create_all()
-    from rewardapp.employees import GetEmployee, EmployeeApi
+    from rewardapp.employees import SingleEmployee, EmployeeApi
     from rewardapp.auth import LoginApi
-    from rewardapp.customer import CustomerApi, GetSingleCustomer
+    from rewardapp.customer import CustomerApi, SingleCustomer
     api.add_resource(LoginApi, '/login')
-    api.add_resource(GetEmployee, '/getEmployee/<e_username>')
-    api.add_resource(EmployeeApi, '/Employee')
-    api.add_resource(CustomerApi, '/Customer')
-    api.add_resource(GetSingleCustomer, '/getCustomer/<c_phone_number>')
+    api.add_resource(SingleEmployee, '/singleEmployee/<e_username>')
+    api.add_resource(EmployeeApi, '/employee')
+    api.add_resource(CustomerApi, '/customer')
+    api.add_resource(SingleCustomer, '/singleCustomer/<c_phone_number>')
     return app

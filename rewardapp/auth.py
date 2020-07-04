@@ -4,16 +4,14 @@ from flask_jwt_extended import create_access_token
 from .model import Employee
 from rewardapp import db
 from flask_restful import Resource
-from flask import request
 import datetime
 
 
 class LoginApi(Resource):
 
     def post(self):
-        body = request.get_json()
-        username =  body.get('username')
-        password = body.get('password')
+        username = request.form['username']
+        password = request.form['password']
         employee = Employee.query.filter_by(e_username=username).first()
         if employee:
             if employee.check_password(password):

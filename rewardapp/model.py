@@ -14,6 +14,7 @@ class Employee(db.Model, UserMixin):
     e_password_hash = db.Column(db.String(128))
     e_name = db.Column(db.String(80))
     e_phone_number = db.Column(db.String(80), unique=True)
+    e_active_flag = db.Column(db.Boolean(), server_default='1', nullable=False)
 
     def __init__(self, e_username, e_name, e_phone_number):
         self.e_username = e_username
@@ -36,6 +37,7 @@ class Customer(db.Model, UserMixin):
     c_name = db.Column(db.String(80))
     c_phone_number = db.Column(db.String(80), unique=True)
     c_email = db.Column(db.String(80), unique=True)
+    c_active_flag = db.Column(db.Boolean(), server_default='1', nullable=False)
 
     def __init__(self, c_username, c_name, c_phone_number, c_email):
         self.c_username = c_username
