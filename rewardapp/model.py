@@ -15,11 +15,13 @@ class Employee(db.Model, UserMixin):
     e_name = db.Column(db.String(80))
     e_phone_number = db.Column(db.String(80), unique=True)
     e_active_flag = db.Column(db.Boolean(), server_default='1', nullable=False)
+    e_admin = db.Column(db.Boolean(), server_default='0', nullable=False)
 
-    def __init__(self, e_username, e_name, e_phone_number):
+    def __init__(self, e_username, e_name, e_phone_number, e_admin):
         self.e_username = e_username
         self.e_name = e_name
         self.e_phone_number = e_phone_number
+        self.e_admin = e_admin
 
     def set_password(self, password):
         self.e_password_hash = generate_password_hash(password)
