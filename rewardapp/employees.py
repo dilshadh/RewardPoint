@@ -42,7 +42,6 @@ class EmployeeApi(Resource):
         db.session.commit()
         return {'e_id' : employee.e_id }, 200
 
-
 class SingleEmployee(Resource):
     
     def get(self, e_username):
@@ -54,7 +53,6 @@ class SingleEmployee(Resource):
             return jsonify(empObj)
         return {'error' : 'Employee doesnt exist'}, 401
 
-    
     def delete(self, e_username):
         employee=Employee.query.filter((Employee.e_username == e_username) & (Employee.e_active_flag == 1)).first()
         if employee:

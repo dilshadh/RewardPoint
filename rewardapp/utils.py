@@ -3,7 +3,7 @@ from rewardapp.model import Configuration, Employee
 def rewardCalculation(r_fuelamount):
      config = Configuration.query.get(1)
      rewardRate = config.cnfg_value
-     reward_point= r_fuelamount*(rewardRate/100)
+     reward_point = float(r_fuelamount)*(float(rewardRate)/100.0)
      return reward_point
 
 def isAdmin(employee):
@@ -11,3 +11,4 @@ def isAdmin(employee):
      if employee.e_admin == True:
           return True
      return False
+
