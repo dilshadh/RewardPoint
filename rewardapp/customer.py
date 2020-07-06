@@ -64,7 +64,7 @@ class CustomerReward(Resource):
             reward=Rewards(r_fuelamount=r_fuelamount, r_point= reward_point, r_ename="ashiq",r_cutomerid=customer_id)
             db.session.add(reward)
             db.session.commit()
-            return {'reward_point': reward_point}
+            return jsonify(reward_point= reward_point)
         return {'error' : "Customer doesnt exist" }, 401
 
 class RewardRate(Resource):
