@@ -7,7 +7,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 #Method to create flask application with required configuration
-def create_app(config_file=None):
+def create_app():
     app = Flask(__name__)
     app.config.from_object('config.DevelopmentConfig')
     api = Api(app)
