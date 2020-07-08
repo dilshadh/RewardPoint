@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from flask_restful import Resource
-from rewardapp.model import Employee, Rewards, Configuration
+from statistics import mean
+from rewardapp.model import Employee, Rewards, Configuration, Feedback
 from rewardapp import db
 from rewardapp.utils import isAdmin
 import json
@@ -34,7 +35,7 @@ class EmployeeApi(Resource):
         employee = Employee.query.filter((Employee.e_phone_number == e_phone_number) | (Employee.e_username == e_username)).first()
         if employee:
             if employee.e_active_flag == 0:
-                 return { 'error' : 'Employee already exists, but is inactive' }, 401
+                return { 'error' : 'Employee already exists, but is inactive' }, 401
             return { 'error' : 'Employee already exists' }, 401
         employee = Employee(e_username=e_username,e_name=e_name,e_phone_number=e_phone_number, e_admin = e_admin)
         employee.set_password(e_password)
@@ -60,6 +61,28 @@ class SingleEmployee(Resource):
             db.session.commit()    
             return {'e_name' : employee.e_username }, 200
         return { 'error' : "Employee doesnt exist" }, 401
+
+class EmpAverageRating(Resource):
+    def get(self, e_username):
+        employee=Employee.query.filter((Employee.e_username == e_username) & (Employee.e_active_flag == 1)).first()
+        if employee:
+            points =[value for value, in Feedback.query.join(Employee, Feedback.fdb_employeeid==Employee.e_id).filter(Employee.e_username==e_username).values(Feedback.fdb_emprating)] 
+            if points:
+                return {'Average rating': mean(points)}, 200
+            return {'error' : "Employee doesnt have any rating"}, 401    
+        return {'error' : "Employee doesnt exist"}, 401
+class EmpFeedback(Resource):
+    def get(self,e_username):
+        employee=Employee.query.filter((Employee.e_username == e_username) & (Employee.e_active_flag == 1)).first()
+        if employee:
+            feedbacks= Feedback.query.join(Customer, Feedback.fdb_employeeid==Employee.e_id).filter(Employee.e_username==e_username).values(Feedback.fdb_emprating)
+class AverageServiceRating(Resource):
+    def get(self):
+        points =[value for value, in Feedback.query.values(Feedback.fdb_servicerating)] 
+        if points:
+            return {'Average rating': mean(points)}, 200
+        return {'error' : "No one rated the service"}, 401      
+
 
 
     

@@ -1,10 +1,7 @@
-from rewardapp.model import Configuration, Employee
+from rewardapp.model import Configuration, Employee, Customer, Rewards
 
-def rewardCalculation(r_fuelamount):
-     config = Configuration.query.get(1)
-     rewardRate = config.cnfg_value
-     reward_point = float(r_fuelamount)*(float(rewardRate)/100.0)
-     return reward_point
+def  rewardCalculation(r_fuelamount):
+     return lambda rewardRate: float(r_fuelamount)*(float(rewardRate)/100.0)  
 
 def isAdmin(employee):
      employee = Employee.query.filter(Employee.e_username == employee).first()

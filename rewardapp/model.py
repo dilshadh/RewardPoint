@@ -54,18 +54,22 @@ class Rewards(db.Model, UserMixin):
     r_id = db.Column(db.Integer, primary_key=True)
     r_fuelamount=db.Column(db.Float)
     r_point = db.Column(db.Float)
-    r_ename = db.Column(db.String(30))
     r_created_date = db.Column(db.DateTime, default=datetime.utcnow)
     r_cutomerid = db.Column(db.Integer, db.ForeignKey('customer.c_id'),
         nullable=False)
     customer = db.relationship('Customer',
         backref=db.backref('rewards', lazy=True))
+
+    r_employeeid = db.Column(db.Integer, db.ForeignKey('employee.e_id'),
+        nullable=False)
+    employee = db.relationship('Employee',
+        backref=db.backref('rewards', lazy=True))    
    
-    def __init__(self, r_fuelamount, r_point, r_ename, r_cutomerid):
+    def __init__(self, r_fuelamount, r_point, r_employeeid, r_cutomerid):
         
         self.r_fuelamount = r_fuelamount
         self.r_point = r_point
-        self.r_ename = r_ename
+        self.r_employeeid = r_employeeid
         self.r_cutomerid= r_cutomerid
 class Configuration(db.Model, UserMixin):
     cnfg_id = db.Column(db.Integer, primary_key=True)         
@@ -76,3 +80,29 @@ class Configuration(db.Model, UserMixin):
     def __init__(self, cnfg_name, cnfg_value):
         self.cnfg_value = cnfg_value
         self.cnfg_name = cnfg_name
+
+class Feedback(db.Model, UserMixin):
+    fdb_id = db.Column(db.Integer, primary_key=True)
+    fdb_date = db.Column(db.DateTime, default=datetime.utcnow)
+    fdb_emprating = db.Column(db.Integer())
+    fdb_servicerating = db.Column(db.Integer())
+    fdb_comments = db.Column(db.String())
+
+    fdb_cutomerid = db.Column(db.Integer, db.ForeignKey('customer.c_id'),
+        nullable=False)
+    customer = db.relationship('Customer',
+        backref=db.backref('feedback', lazy=True))
+    
+    fdb_employeeid = db.Column(db.Integer, db.ForeignKey('employee.e_id'),
+        nullable=False)
+    employee = db.relationship('Employee',
+        backref=db.backref('feedback', lazy=True))
+
+    def __init__(self, fdb_emprating, fdb_servicerating, fdb_comments, fdb_cutomerid, fdb_employeeid):
+        self.fdb_emprating = fdb_emprating
+        self.fdb_servicerating = fdb_servicerating
+        self.fdb_comments = fdb_comments
+        self.fdb_cutomerid = fdb_cutomerid
+        self.fdb_employeeid = fdb_employeeid
+
+

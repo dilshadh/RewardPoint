@@ -14,12 +14,12 @@ def create_app(config_file=None):
     jwt = JWTManager(app)
     login_manager.init_app(app)
     db.init_app(app)
-    from rewardapp.model import Employee, Customer, Rewards, Configuration
+    from rewardapp.model import Employee, Customer, Rewards, Configuration, Feedback
     with app.app_context():
         db.create_all()
-    from rewardapp.employees import SingleEmployee, EmployeeApi
+    from rewardapp.employees import SingleEmployee, EmployeeApi, EmpAverageRating, AverageServiceRating
     from rewardapp.auth import LoginApi
-    from rewardapp.customer import CustomerApi, SingleCustomer, CustomerReward, RewardRate
+    from rewardapp.customer import CustomerApi, SingleCustomer, CustomerReward, RewardRate, CustomerFeedbacks, TotalReward
     api.add_resource(LoginApi, '/login')
     api.add_resource(SingleEmployee, '/singleEmployee/<e_username>')
     api.add_resource(EmployeeApi, '/employee')
@@ -27,4 +27,8 @@ def create_app(config_file=None):
     api.add_resource(SingleCustomer, '/singleCustomer/<c_phone_number>')
     api.add_resource(CustomerReward, '/customerreward')
     api.add_resource(RewardRate, '/rewardrate')
+    api.add_resource(CustomerFeedbacks, '/feedback')
+    api.add_resource(TotalReward, '/totalpoints/<c_phone_number>')
+    api.add_resource(EmpAverageRating, '/empaveragerating/<e_username>')
+    api.add_resource(AverageServiceRating, '/averageservicerating')
     return app
