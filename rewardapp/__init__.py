@@ -17,6 +17,12 @@ def create_app():
     from rewardapp.model import Employee, Customer, Rewards, Configuration, Feedback
     with app.app_context():
         db.create_all()
+        employee = Employee.query.filter(Employee.e_username =='admin').first()
+        if not employee:
+            employee = Employee(e_username='admin',e_name='Administrator',e_phone_number='0000000000', e_admin =1)
+            employee.set_password('4@fxep6%qrs93#qws')
+            db.session.add(employee)
+            db.session.commit()
     from rewardapp.employees import SingleEmployee, EmployeeApi, EmpAverageRating, AverageServiceRating
     from rewardapp.auth import LoginApi
     from rewardapp.customer import CustomerApi, SingleCustomer, CustomerReward, RewardRate, CustomerFeedbacks, TotalReward
